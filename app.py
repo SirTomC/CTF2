@@ -6,8 +6,8 @@ app = Flask(__name__)
 @app.route('/')
 def calc():
     op = request.args.get('op')
-    a = float(request.args.get('a'))
-    b = float(request.args.get('b'))
+    a = float(request.args.get('x'))
+    b = float(request.args.get('y'))
 
     if op == 'add':
         result = a + b
