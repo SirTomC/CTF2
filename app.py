@@ -1,21 +1,42 @@
 from flask import Flask, request
+import os
 
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return 'Try accessing /divide?num=0 or /divide?num=abc'
+def calc():
+    op = request.args.get('op')
+    a = float(request.args.get('a'))
+    b = float(request.args.get('b'))
 
-@app.route('/divide')
-def divide():
-    num = int(request.args.get('num', '1'))
-    result = 100 // num
-    return f"Result: {result}"
+    if op == 'add':
+        result = a + b
+    elif op == 'sub':
+        result = a - b
+    elif op == 'mul':
+        result = a * b
+    elif op == 'div':
+        result = a / b 
+    elif op == 'pow':
+        result = a ** b
+    else:
+        raise ValueError("Unsupported operation")
+    
+    return f"""
+        <h3>Calculator</h3>
+        <p><b>Result:</b> {result}</p>
+    """
 
 @app.errorhandler(500)
 def error(e):
-    return f"<h3>Oops, something went wrong!</h3><pre>{e}</pre><hr><code>Tommy{{pLz_Us3_As_1nT3nd3d}}</code>", 500
+    return f"""
+        <h3>Calculator</h3>
+        <p>Oops, something went wrong!</p>
+        <pre>{e}</pre>
+        <hr>
+        <code>Tommy{{pLz_Us3_As_1nT3nd3d}}</code>
+    """, 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # required for Render
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
